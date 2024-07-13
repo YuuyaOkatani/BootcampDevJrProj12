@@ -21,25 +21,7 @@ import jakarta.annotation.PostConstruct;
 @RestController
 public class CategoryContoller {
 
-    /* 
-    List<Category> categories = new ArrayList<>();
-
-    @PostConstruct
-    public void init() {
-        String[] nomes = {
-                "Produção própria",
-                "Nacional",
-                "Importado",
-                "Premium",
-
-        };
-
-        for (int i = 0; i < nomes.length; i++) {
-            Category c = new Category(i + 1, nomes[i]);
-            categories.add(c);
-        }
-
-    }*/
+    
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -48,23 +30,16 @@ public class CategoryContoller {
     public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
-    /*
-     * @GetMapping("categories/{id}")
-     * public ResponseEntity<Category> getCategories(@PathVariable int id){
-     * Category cat = categories
-     * .stream()
-     * .filter(c -> c.getId() == id).
-     * findFirst()
-     * .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-     * "Category not found"));
-     * 
-     * return ResponseEntity.ok(cat);
-     * 
-     * }
-     * 
-     * 
-     * 
-     * 
-     */
+
+
+     @GetMapping("categories/{id}")
+     public ResponseEntity<Category> getCategories(@PathVariable int id){
+      Category cat = categoryRepository.findById(id)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+     "Category not found"));
+     
+      return ResponseEntity.ok(cat);
+      
+      }
 
 }

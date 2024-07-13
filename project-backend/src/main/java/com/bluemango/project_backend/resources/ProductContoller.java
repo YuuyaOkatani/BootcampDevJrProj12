@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +23,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.models.Product;
+import com.bluemango.project_backend.repositories.CategoryRepository;
 import com.bluemango.project_backend.repositories.ProductRepository;
+import com.bluemango.project_backend.services.ProductService;
 
 import jakarta.annotation.PostConstruct;
 
@@ -29,71 +33,93 @@ import jakarta.annotation.PostConstruct;
 @CrossOrigin
 public class ProductContoller {
 
-   // private List<Product> products = new ArrayList<>();
-
-    /*
-     * 
-     * 
-     * private List<Product> products = Arrays.asList(
-     * new Product(0, "Product 0", 0.0),
-     * new Product(1, "Product 1", 10.0),
-     * new Product(2, "Product 2", 20.0),
-     * new Product(3, "Product 3", 30.0) // Adicionando mais produtos na lista
-     * inicialmente
-     * );
-     * 
-     * @PostMapping("products")
-    // criar um corpo JSON para postar
-    public ResponseEntity<Product> save(@RequestBody Product product){
-        product.setId(products.size() + 1);
-        products.add(product);  
-
-        // Location -> URI(Endereço)    
-        URI location = ServletUriComponentsBuilder
-        .fromCurrentRequest()
-        .path("/${id}")
-        .buildAndExpand(product.getId())
-        .toUri();
-
-        return ResponseEntity.created(location).body(product);
-
-    }
-     */
-
-    
-    
-
-    
+    // private List<Product> products = new ArrayList<>();
 
     // Ela inicializa a lista de produtos
-
 
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductService productService; 
+
+    @PostMapping("products")
+    // criar um corpo JSON para postar
+    public ResponseEntity<Product> save(@RequestBody Product product) {
+
+        product = productRepository.save(product);
+
+        // Location -> URI(Endereço)
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/${id}")
+                .buildAndExpand(product.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(product);
+
+    }
+
     @GetMapping("products")
     public List<Product> getProducts() {
 
-        return productRepository.findAll() ;
+        return productRepository.findAll();
     }
-
-    /* 
-
-
 
     @GetMapping("products/{id}")
     public ResponseEntity<Product> getProducts(@PathVariable int id) {
 
-
-        Product prod = products
-                .stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
-
-        return ResponseEntity.ok(prod);
+        Product product = productService.getById(id);   
+        return ResponseEntity.ok(product);
 
     }
-    */
+
+    @DeleteMapping("products/{id}")
+    public ResponseEntity<Void> removeProducts(@PathVariable int id) {
+
+        Product prod = productRepository.findById(id)
+
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Product not found"));
+
+        productRepository.delete(prod);
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @PutMapping("products/{id}")
+    public ResponseEntity<Void> updateProducts(@PathVariable int id, @RequestBody Product productUpdate) {
+
+        Product product = productRepository.findById(id)
+
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Product not found"));
+
+        if(productUpdate.getCategory() == null){
+            new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Category can not be empty");
+
+        }
+
+        Category category = categoryRepository.findById(productUpdate.getCategory().getId())
+
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Category not found"));
+
+        product.setName(productUpdate.getName());
+        product.setDesc(productUpdate.getDesc());
+        product.setPrice(productUpdate.getPrice());
+        product.setCategory(category);
+        product.setPromotion(productUpdate.isPromotion());
+        product.setNovo(productUpdate.isNovo());
+
+        productRepository.save(product); 
+
+        return ResponseEntity.ok().build();
+
+    }
 
 }

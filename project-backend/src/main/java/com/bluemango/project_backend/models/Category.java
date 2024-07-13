@@ -9,14 +9,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "TBL_CATEGORY") // Coloca o nome na tabela
 public class Category {
-    
-    //Attributes
+
+    // Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
-    
     private String name;
 
     // Constructor
@@ -24,18 +22,27 @@ public class Category {
         this.id = id;
         this.name = name;
     }
-    
 
-    // Getters and Setters
+    public Category() {
+
+    }
+
     public int getId() {
         return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
 
-    
-    
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    
+    // Getters and Setters
+
 }

@@ -6,9 +6,5 @@ import com.bluemango.project_backend.models.Category;
 
 
 ///Economizar linhas SQL
-public interface CategoryRepository extends JpaRepository <Category, Integer>{
-
-    
-
-    
+public interface CategoryRepository extends JpaRepository <Category,Integer>{
 } 
