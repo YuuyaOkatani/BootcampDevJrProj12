@@ -2,6 +2,7 @@ package com.bluemango.project_backend.models;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,8 +19,12 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name; 
+
+    @Column(nullable = false, length = 1024)
     private String desc;
+    
     private Double price;
 
     @ManyToOne
