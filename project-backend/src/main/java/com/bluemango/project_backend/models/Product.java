@@ -18,7 +18,7 @@ public class Product {
 
     private String name; 
     private String desc;
-    private double price;
+    private Double price;
 
     @ManyToOne
     private Category category; 
@@ -66,11 +66,11 @@ public class Product {
         this.desc = desc;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
