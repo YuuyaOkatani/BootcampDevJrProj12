@@ -19,7 +19,7 @@ public class ProductService {
     private ProductRepository productRepository; 
 
     
-    public Product getById(int id){
+    public Product getById(Long id){
         Product product = productRepository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         return product;
@@ -34,11 +34,11 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void deleteById(int id){
+    public void deleteById(Long id){
         productRepository.deleteById(id);
     }
 
-    public void update(int id, Product product){
+    public void update(Long id, Product product){
         Product existingProduct = getById(id);
         existingProduct.setName(product.getName());
         existingProduct.setPrice(product.getPrice());

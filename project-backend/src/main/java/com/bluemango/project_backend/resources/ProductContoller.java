@@ -67,7 +67,7 @@ public class ProductContoller {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Product> getProducts(@PathVariable int id) {
+    public ResponseEntity<Product> getProducts(@PathVariable Long id) {
 
         Product product = productService.getById(id);   
         return ResponseEntity.ok(product);
@@ -75,7 +75,7 @@ public class ProductContoller {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> removeProducts(@PathVariable int id) {
+    public ResponseEntity<Void> removeProducts(@PathVariable Long id) {
 
         Product prod = productRepository.findById(id)
 
@@ -88,7 +88,7 @@ public class ProductContoller {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateProducts(@PathVariable int id, @RequestBody Product productUpdate) {
+    public ResponseEntity<Void> updateProducts(@PathVariable Long id, @RequestBody Product productUpdate) {
 
         Product product = productRepository.findById(id)
 
