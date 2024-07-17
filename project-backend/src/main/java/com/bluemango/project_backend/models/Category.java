@@ -20,14 +20,16 @@ public class Category {
     private String name;
 
     // Constructor
+    public Category() {
+
+    }
+    
     public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Category() {
-
-    }
+    
 
     public Integer getId() {
         return id;

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "TBL_PRODUCT")
@@ -19,12 +20,14 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(nullable = false)
+    @NotNull(message = "Name cannot be null")
     private String name; 
 
     @Column(nullable = false, length = 1024)
     private String desc;
-    
+
     private Double price;
 
     @ManyToOne
@@ -34,6 +37,10 @@ public class Product implements Serializable {
     private boolean novo; 
 
     // Constructor
+
+    public Product(){
+
+    }
 
     public Product(Long id, String name, String desc, double price, Category category, boolean promotion, boolean novo) {
         this.id = id;
@@ -45,9 +52,7 @@ public class Product implements Serializable {
         this.novo = novo;
     }
 
-    public Product(){
-
-    }
+    
 
     public Long getId() {
         return id;
