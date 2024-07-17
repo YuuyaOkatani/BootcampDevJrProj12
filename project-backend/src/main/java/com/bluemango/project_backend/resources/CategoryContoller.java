@@ -50,7 +50,7 @@ public class CategoryContoller {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories() {
+    public ResponseEntity<List<CategoryResponse>> getCategories() {
         return ResponseEntity.ok(categoryService.getAll());
     }
 
@@ -71,7 +71,7 @@ public class CategoryContoller {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateCategorys(@PathVariable int id, @RequestBody Category categoryUpdate) {
+    public ResponseEntity<Void> updateCategorys(@PathVariable int id, @RequestBody CategoryRequest categoryUpdate) { 
 
         categoryService.update(id, categoryUpdate);
 

@@ -1,6 +1,7 @@
 package com.bluemango.project_backend.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,8 +35,11 @@ public class CategoryService {
 
     
 
-    public List<Category> getAll(){
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getAll(){
+        return categoryRepository.findAll()
+        .stream()
+        .map(c -> c.toDTO())
+        .collect(Collectors.toList());
     }
 
     public CategoryResponse save(CategoryRequest categoryRequest){
@@ -47,7 +51,7 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public void update(int id, Category category){
+    public void update(int id, CategoryRequest category){
         Category existingCategory = getById(id);
         existingCategory.setName(category.getName()); 
         categoryRepository.save(existingCategory);
