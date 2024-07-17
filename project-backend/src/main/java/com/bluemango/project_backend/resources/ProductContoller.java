@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.bluemango.project_backend.dto.ProductRequest;
+import com.bluemango.project_backend.dto.ProductResponse;
 import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.models.Product;
 import com.bluemango.project_backend.repositories.CategoryRepository;
@@ -46,9 +48,9 @@ public class ProductContoller {
 
     @PostMapping
     // criar um corpo JSON para postar
-    public ResponseEntity<Product> save(@Validated @RequestBody Product product) {
+    public ResponseEntity<ProductResponse> save(@Validated @RequestBody ProductRequest productRequest) {
 
-        product = productRepository.save(product);
+        ProductResponse product = productService.save(productRequest);
 
         // Location -> URI(Endereço)
         URI location = ServletUriComponentsBuilder

@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bluemango.project_backend.dto.CategoryRequest;
 import com.bluemango.project_backend.dto.CategoryResponse;
-import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.services.CategoryService;
 
 @CrossOrigin

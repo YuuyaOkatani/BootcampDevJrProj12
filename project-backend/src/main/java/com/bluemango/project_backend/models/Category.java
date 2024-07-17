@@ -26,6 +26,10 @@ public class Category {
 
     }
 
+    public Category(Integer id) {
+        //TODO Auto-generated constructor stub
+    }
+
     public Category(String name) {
         //TODO Auto-generated constructor stub
         this.name = name;
@@ -36,6 +40,8 @@ public class Category {
         this.id = id;
         this.name = name;
     }
+
+
 
     public CategoryResponse toDTO(){
         return new CategoryResponse(id, name);

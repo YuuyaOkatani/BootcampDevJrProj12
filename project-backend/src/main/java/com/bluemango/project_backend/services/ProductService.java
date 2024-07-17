@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.bluemango.project_backend.dto.ProductRequest;
+import com.bluemango.project_backend.dto.ProductResponse;
 import com.bluemango.project_backend.models.Product;
 import com.bluemango.project_backend.repositories.ProductRepository;
 
@@ -30,8 +32,9 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product save( Product product){
-        return productRepository.save(product);
+    public ProductResponse save(ProductRequest productRequest){
+        Product product = productRepository.save(productRequest.toEntity());
+        return product.toDTO();
     }
 
     public void deleteById(Long id){
@@ -45,6 +48,6 @@ public class ProductService {
         existingProduct.setDesc(product.getDesc());
         existingProduct.setPromotion(product.isPromotion());
         existingProduct.setNovo(product.isNovo()); 
-        save(existingProduct);
+        productRepository.save(existingProduct);
     }
 }
