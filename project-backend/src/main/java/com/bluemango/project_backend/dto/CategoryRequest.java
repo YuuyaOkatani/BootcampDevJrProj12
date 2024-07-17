@@ -17,15 +17,15 @@ public class CategoryRequest {
 
     public String getName() {
         return name;
-    }
+    };
 
     public void setName(String name) {
         this.name = name;
-    } 
+    };
 
     public Category toEntity(){
         return new Category(name);
-    }
+    };
 
     
-}
+};

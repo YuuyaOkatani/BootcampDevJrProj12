@@ -1,15 +1,13 @@
 package com.bluemango.project_backend.models;
 
+import com.bluemango.project_backend.dto.CategoryResponse;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "TBL_CATEGORY") // Coloca o nome na tabela
@@ -28,18 +26,23 @@ public class Category {
 
     }
 
-    public Category(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    
-
     public Category(String name) {
         //TODO Auto-generated constructor stub
         this.name = name;
     }
 
+
+    public Category(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public CategoryResponse toDTO(){
+        return new CategoryResponse(id, name);
+    }
+    
+
+    
     public Integer getId() {
         return id;
     }

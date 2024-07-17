@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bluemango.project_backend.dto.CategoryRequest;
+import com.bluemango.project_backend.dto.CategoryResponse;
 import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.services.CategoryService;
 
@@ -33,9 +34,9 @@ public class CategoryContoller {
 
     @PostMapping
     // criar um corpo JSON para postar
-    public ResponseEntity<Category> save(@Validated @RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<CategoryResponse> save(@Validated @RequestBody CategoryRequest categoryRequest) {
 
-        Category category = categoryService.save(categoryRequest);
+        CategoryResponse category = categoryService.save(categoryRequest);
 
         // Location -> URI(Endereço)
         URI location = ServletUriComponentsBuilder
@@ -54,8 +55,8 @@ public class CategoryContoller {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Category> getCategories(@PathVariable int id) {
-        Category cat = categoryService.getById(id);
+    public ResponseEntity<CategoryResponse> getCategories(@PathVariable int id) {
+        CategoryResponse cat = categoryService.getDTOById(id);
 
         return ResponseEntity.ok(cat);
 

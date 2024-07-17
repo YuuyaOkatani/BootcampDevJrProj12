@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bluemango.project_backend.dto.CategoryRequest;
+import com.bluemango.project_backend.dto.CategoryResponse;
 import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.repositories.CategoryRepository;
 
@@ -17,7 +18,13 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository; 
 
-    
+    public CategoryResponse getDTOById(int id){
+        Category category = categoryRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+        return category.toDTO();
+
+    }
+
     public Category getById(int id){
         Category category = categoryRepository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
@@ -25,12 +32,15 @@ public class CategoryService {
 
     }
 
+    
+
     public List<Category> getAll(){
         return categoryRepository.findAll();
     }
 
-    public Category save(CategoryRequest categoryRequest){
-        return categoryRepository.save(categoryRequest.toEntity());
+    public CategoryResponse save(CategoryRequest categoryRequest){
+        Category category = categoryRepository.save(categoryRequest.toEntity());
+        return category.toDTO();
     }
 
     public void deleteById(int id){
