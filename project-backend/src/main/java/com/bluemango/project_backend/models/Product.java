@@ -9,7 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "TBL_PRODUCT")
@@ -21,16 +26,24 @@ public class Product implements Serializable {
     private Long id;
 
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
+    @Size(min = 3, max = 255, message = "Name length min = 3 and max = 255")
     @NotNull(message = "Name cannot be null")
+    @NotEmpty(message = "Name cannot be empty")
+    @NotBlank(message = "Name cannot be blank")
     private String name; 
 
     @Column(nullable = false, length = 1024)
+    @NotBlank(message = "Description cannot be blank")
+    @NotEmpty(message = "Description cannot be empty")
+    @Size(min = 3, max = 1024, message = "Description length min = 3 and max = 1024")
     private String desc;
 
+    @Min(value = 0 , message = "Price must be greater than 0")
     private Double price;
 
     @ManyToOne
+    @Valid
     private Category category; 
 
     private boolean promotion;

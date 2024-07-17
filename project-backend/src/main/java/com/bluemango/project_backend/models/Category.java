@@ -6,6 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "TBL_CATEGORY") // Coloca o nome na tabela
@@ -17,19 +21,24 @@ public class Category {
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String name; 
 
     // Constructor
     public Category() {
 
     }
-    
+
     public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
     
+
+    public Category(String name) {
+        //TODO Auto-generated constructor stub
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

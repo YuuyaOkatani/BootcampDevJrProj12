@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.bluemango.project_backend.dto.CategoryRequest;
 import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.repositories.CategoryRepository;
 
@@ -28,8 +29,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category save( Category category){
-        return categoryRepository.save(category);
+    public Category save(CategoryRequest categoryRequest){
+        return categoryRepository.save(categoryRequest.toEntity());
     }
 
     public void deleteById(int id){
@@ -39,7 +40,7 @@ public class CategoryService {
     public void update(int id, Category category){
         Category existingCategory = getById(id);
         existingCategory.setName(category.getName()); 
-        save(existingCategory);
+        categoryRepository.save(existingCategory);
     }
     
 }
