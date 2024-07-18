@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.bluemango.project_backend.dto.CategoryResponse;
 import com.bluemango.project_backend.dto.ProductRequest;
 import com.bluemango.project_backend.dto.ProductResponse;
 import com.bluemango.project_backend.models.Category;
@@ -22,8 +21,6 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private CategoryService categoryService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -48,16 +45,13 @@ public class ProductService {
     }
 
     public void deleteById(Long id) {
+        
         productRepository.deleteById(id);
     }
 
     public void update(Long id, ProductRequest productRequest) {
-        Product existingProduct = getById(id);
 
-        if (productRequest.getCategory() == null) {
-            new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Category can not be empty");
-        }
+        Product existingProduct = getById(id);
 
         Category category = categoryRepository.findById(productRequest.getCategory().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));

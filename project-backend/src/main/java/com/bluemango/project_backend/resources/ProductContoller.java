@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,15 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.bluemango.project_backend.dto.CategoryRequest;
-import com.bluemango.project_backend.dto.CategoryResponse;
 import com.bluemango.project_backend.dto.ProductRequest;
 import com.bluemango.project_backend.dto.ProductResponse;
-import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.models.Product;
-import com.bluemango.project_backend.repositories.CategoryRepository;
 import com.bluemango.project_backend.repositories.ProductRepository;
-import com.bluemango.project_backend.services.CategoryService;
 import com.bluemango.project_backend.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -45,10 +39,6 @@ public class ProductContoller {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private CategoryService categoryService; 
-
 
 
     @Autowired
