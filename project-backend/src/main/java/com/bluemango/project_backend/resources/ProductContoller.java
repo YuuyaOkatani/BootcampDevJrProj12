@@ -40,9 +40,8 @@ public class ProductContoller {
     @Autowired
     private ProductRepository productRepository;
 
-
     @Autowired
-    private ProductService productService; 
+    private ProductService productService;
 
     @PostMapping
     // criar um corpo JSON para postar
@@ -64,14 +63,13 @@ public class ProductContoller {
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts() {
 
-
         return ResponseEntity.ok(productService.getAll());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<ProductResponse> getProducts(@PathVariable Long id) {
 
-        ProductResponse product = productService.getDTOById(id);   
+        ProductResponse product = productService.getById(id);
         return ResponseEntity.ok(product);
 
     }
@@ -90,13 +88,10 @@ public class ProductContoller {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateProducts(@PathVariable Long id, @Valid @RequestBody ProductRequest productUpdate) {
+    public ResponseEntity<Void> updateProducts(@PathVariable Long id,
+            @Valid @RequestBody ProductRequest productUpdate) {
 
         productService.update(id, productUpdate);
-
-    
-
-      
 
         return ResponseEntity.ok().build();
 

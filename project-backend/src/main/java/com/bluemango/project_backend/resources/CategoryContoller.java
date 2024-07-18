@@ -26,10 +26,8 @@ import com.bluemango.project_backend.services.CategoryService;
 @RequestMapping("categories")
 public class CategoryContoller {
 
-
-
     @Autowired
-    private CategoryService categoryService; 
+    private CategoryService categoryService;
 
     @PostMapping
     // criar um corpo JSON para postar
@@ -70,7 +68,7 @@ public class CategoryContoller {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateCategorys(@PathVariable int id, @RequestBody CategoryRequest categoryUpdate) { 
+    public ResponseEntity<Void> updateCategorys(@PathVariable int id, @RequestBody CategoryRequest categoryUpdate) {
 
         categoryService.update(id, categoryUpdate);
 
