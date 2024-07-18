@@ -55,7 +55,7 @@ public class CategoryContoller {
 
     @GetMapping("{id}")
     public ResponseEntity<CategoryResponse> getCategories(@PathVariable int id) {
-        CategoryResponse cat = categoryService.getDTOById(id);
+        CategoryResponse cat = categoryService.getById(id);
 
         return ResponseEntity.ok(cat);
 

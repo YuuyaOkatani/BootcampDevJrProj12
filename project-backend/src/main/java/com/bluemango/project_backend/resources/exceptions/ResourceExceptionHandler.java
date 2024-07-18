@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.bluemango.project_backend.services.exceptions.DatabaseException;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
@@ -44,6 +45,22 @@ public class ResourceExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST; 
 
         error.setError("Database exception");
+        error.setMessage(exception.getMessage());
+        error.setPath(request.getRequestURI());
+        error.setStatus(status.value());
+        error.setTimeStamp(Instant.now());
+
+        return ResponseEntity.status(status).body(error);
+    }
+
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<StandardError> entityNotFoundException(EntityNotFoundException exception, HttpServletRequest request){
+        StandardError error = new StandardError();
+
+        HttpStatus status = HttpStatus.NOT_FOUND; 
+
+        error.setError("Resource not found");
         error.setMessage(exception.getMessage());
         error.setPath(request.getRequestURI());
         error.setStatus(status.value());
