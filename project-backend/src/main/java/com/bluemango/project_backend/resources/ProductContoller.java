@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,13 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.bluemango.project_backend.dto.CategoryRequest;
+import com.bluemango.project_backend.dto.CategoryResponse;
 import com.bluemango.project_backend.dto.ProductRequest;
 import com.bluemango.project_backend.dto.ProductResponse;
 import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.models.Product;
 import com.bluemango.project_backend.repositories.CategoryRepository;
 import com.bluemango.project_backend.repositories.ProductRepository;
+import com.bluemango.project_backend.services.CategoryService;
 import com.bluemango.project_backend.services.ProductService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin
@@ -41,7 +47,9 @@ public class ProductContoller {
     private ProductRepository productRepository;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService; 
+
+
 
     @Autowired
     private ProductService productService; 
@@ -64,15 +72,16 @@ public class ProductContoller {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<List<ProductResponse>> getProducts() {
+
 
         return ResponseEntity.ok(productService.getAll());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Product> getProducts(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> getProducts(@PathVariable Long id) {
 
-        Product product = productService.getById(id);   
+        ProductResponse product = productService.getDTOById(id);   
         return ResponseEntity.ok(product);
 
     }
@@ -91,32 +100,13 @@ public class ProductContoller {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateProducts(@PathVariable Long id, @RequestBody Product productUpdate) {
+    public ResponseEntity<Void> updateProducts(@PathVariable Long id, @Valid @RequestBody ProductRequest productUpdate) {
 
-        Product product = productRepository.findById(id)
+        productService.update(id, productUpdate);
 
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Product not found"));
+    
 
-        if(productUpdate.getCategory() == null){
-            new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Category can not be empty");
-
-        }
-
-        Category category = categoryRepository.findById(productUpdate.getCategory().getId())
-
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Category not found"));
-
-        product.setName(productUpdate.getName());
-        product.setDesc(productUpdate.getDesc());
-        product.setPrice(productUpdate.getPrice());
-        product.setCategory(category);
-        product.setPromotion(productUpdate.isPromotion());
-        product.setNovo(productUpdate.isNovo());
-
-        productRepository.save(product); 
+      
 
         return ResponseEntity.ok().build();
 

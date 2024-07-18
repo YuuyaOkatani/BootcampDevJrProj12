@@ -2,14 +2,17 @@ package com.bluemango.project_backend.services;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.bluemango.project_backend.dto.CategoryResponse;
 import com.bluemango.project_backend.dto.ProductRequest;
 import com.bluemango.project_backend.dto.ProductResponse;
+import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.models.Product;
 import com.bluemango.project_backend.repositories.ProductRepository;
 
@@ -20,6 +23,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository; 
 
+    @Autowired
+    private CategoryService categoryService;
+
     
     public Product getById(Long id){
         Product product = productRepository.findById(id)
@@ -28,8 +34,11 @@ public class ProductService {
 
     }
 
-    public List<Product> getAll(){
-        return productRepository.findAll();
+    public List<ProductResponse> getAll(){
+        return productRepository.findAll()
+        .stream()
+        .map(p -> p.toDTO())
+        .collect(Collectors.toList());
     }
 
     public ProductResponse save(ProductRequest productRequest){
@@ -41,13 +50,28 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public void update(Long id, Product product){
+    public void update(Long id, ProductRequest productRequest){
         Product existingProduct = getById(id);
-        existingProduct.setName(product.getName());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setDesc(product.getDesc());
-        existingProduct.setPromotion(product.isPromotion());
-        existingProduct.setNovo(product.isNovo()); 
+
+        if(productRequest.getCategory() == null){
+            new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Category can not be empty");
+        }
+
+        Category category = categoryService.getById(productRequest.getCategory().getId());
+
+        existingProduct.setName(productRequest.getName());
+        existingProduct.setPrice(productRequest.getPrice());
+        existingProduct.setDesc(productRequest.getDesc());
+        existingProduct.setCategory(category);  // returns the category
+        existingProduct.setPromotion(productRequest.isPromotion());
+        existingProduct.setNovo(productRequest.isNovo()); 
         productRepository.save(existingProduct);
+    }
+
+    public ProductResponse getDTOById(Long id) {
+        // TODO Auto-generated method stub
+        Product product = getById(id); 
+        return product.toDTO();
     }
 }

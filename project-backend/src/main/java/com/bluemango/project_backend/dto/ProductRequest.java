@@ -23,15 +23,17 @@ public class ProductRequest {
     @Size(min = 3, max = 1024, message = "Description length min = 3 and max = 1024")
     private String desc;
 
-    private Double price;
+    private double price;
 
-
+    @NotNull
     @Valid
     private IntegerDTO category;  // returns the category id
 
     private boolean promotion;
 
-
+    public ProductRequest(){
+        
+    }
 
     public Product toEntity() {
         // TODO Auto-generated method stub
@@ -59,10 +61,10 @@ public class ProductRequest {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
     public IntegerDTO getCategory() {

@@ -9,9 +9,15 @@ public class ProductResponse {
     private CategoryResponse category;  // returns the category id
 
     private boolean promotion;
+
+    public ProductResponse() {
+    }
+
+    
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }

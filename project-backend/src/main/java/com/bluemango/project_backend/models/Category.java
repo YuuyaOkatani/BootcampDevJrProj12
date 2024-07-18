@@ -28,6 +28,7 @@ public class Category {
 
     public Category(Integer id) {
         //TODO Auto-generated constructor stub
+        this.id = id;
     }
 
     public Category(String name) {
