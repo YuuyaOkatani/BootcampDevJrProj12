@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +13,7 @@ import com.bluemango.project_backend.dto.CategoryRequest;
 import com.bluemango.project_backend.dto.CategoryResponse;
 import com.bluemango.project_backend.models.Category;
 import com.bluemango.project_backend.repositories.CategoryRepository;
+import com.bluemango.project_backend.services.exceptions.DatabaseException;
 
 @Service
 public class CategoryService {
@@ -48,7 +50,13 @@ public class CategoryService {
     }
 
     public void deleteById(int id){
-        categoryRepository.deleteById(id);
+        try{
+            categoryRepository.deleteById(id);
+        }
+        catch(DataIntegrityViolationException e){
+            throw new DatabaseException("Constrain violation, category can't be deleted"); 
+
+        }
     }
 
     public void update(int id, CategoryRequest category){
